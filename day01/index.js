@@ -1,0 +1,18 @@
+const lineReader = require("line-reader");
+const Promise = require('bluebird');
+
+const eachLine = Promise.promisify(lineReader.eachLine);
+
+let filename = process.argv.slice(2)[0] || 'input.txt';
+
+let answer = 0;
+
+let lines = [];
+
+eachLine(filename, function(line) {
+  let numbers = line.split('').filter((ch) => /\d/.test(ch));
+  lines.push(parseInt(numbers[0])*10+parseInt(numbers.pop()));
+}).then(function(err) {
+  answer = lines.reduce((a,b)=>a+b);
+  console.log(answer);
+});
