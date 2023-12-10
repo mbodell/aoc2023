@@ -1,7 +1,7 @@
 {
-  "name": "day",
+  "name": "day 4",
   "version": "1.0.0",
-  "description": "Day of Advent of Code 2023",
+  "description": "Day 4 of Advent of Code 2023",
   "main": "index.js",
   "repository": {
     "type": "git",
