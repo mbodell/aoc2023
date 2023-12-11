@@ -10,6 +10,7 @@ let m = [];
 eachLine(filename, function(line) {
   m.push(line.split(''));
 }).then(function(err) {
+  console.log(m);
   let y,x;
   let sx,sy;
   for(y=0;y<m.length;y++) {
