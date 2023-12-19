@@ -25,10 +25,10 @@ eachLine(filename, function(line) {
   for(let s=0;cycle<3 && s<cycles;s++) {
     // go North
     tilt = [];
-    for(let y=0;y<sequence[seq].length;y++) {
+    for(let y=0;y<rec.length;y++) {
       tilt.push([]);
-      for(let x=0;x<sequence[seq][y].length;x++) {
-        tilt[y][x] = sequence[seq][y][x];
+      for(let x=0;x<rec[y].length;x++) {
+        tilt[y][x] = rec[y][x];
         if(tilt[y][x] === 'O') {
           let valid = true;
           for(let d=1;valid&&(y-d)>=0;d++) {
@@ -42,16 +42,15 @@ eachLine(filename, function(line) {
         }
       }
     }
-    sequence.push(tilt);
-    seq++;
+    rec = tilt;
     // go West
     tilt = [];
-    for(let y=0;y<sequence[seq].length;y++) {
+    for(let y=0;y<rec.length;y++) {
       tilt.push([]);
     }
-    for(let x=0;x<sequence[seq][0].length;x++) {
-      for(let y=0;y<sequence[seq].length;y++) {
-        tilt[y][x] = sequence[seq][y][x];
+    for(let x=0;x<rec[0].length;x++) {
+      for(let y=0;y<rec.length;y++) {
+        tilt[y][x] = rec[y][x];
         if(tilt[y][x] === 'O') {
           let valid = true;
           for(let d=1;valid&&(x-d)>=0;d++) {
@@ -65,19 +64,18 @@ eachLine(filename, function(line) {
         }
       }
     }
-    sequence.push(tilt);
-    seq++;
+    rec = tilt;
     // go South
     tilt = [];
-    for(let y=0;y<sequence[seq].length;y++) {
+    for(let y=0;y<rec.length;y++) {
       tilt.push([]);
     }
-    for(let y=sequence[seq].length-1;y>=0;y--) {
-      for(let x=0;x<sequence[seq][y].length;x++) {
-        tilt[y][x] = sequence[seq][y][x];
+    for(let y=rec.length-1;y>=0;y--) {
+      for(let x=0;x<rec[y].length;x++) {
+        tilt[y][x] = rec[y][x];
         if(tilt[y][x] === 'O') {
           let valid = true;
-          for(let d=1;valid&&(y+d)<sequence[seq].length;d++) {
+          for(let d=1;valid&&(y+d)<rec.length;d++) {
             if(tilt[y+d][x]==='.') {
               tilt[y+d-1][x] = '.';
               tilt[y+d][x] = 'O';
@@ -88,19 +86,18 @@ eachLine(filename, function(line) {
         }
       }
     }
-    sequence.push(tilt);
-    seq++;
+    rec = tilt;
     // go East
     tilt = [];
-    for(let y=0;y<sequence[seq].length;y++) {
+    for(let y=0;y<rec.length;y++) {
       tilt.push([]);
     }
-    for(let x=sequence[seq][0].length-1;x>=0;x--) {
-      for(let y=0;y<sequence[seq].length;y++) {
-        tilt[y][x] = sequence[seq][y][x];
+    for(let x=rec[0].length-1;x>=0;x--) {
+      for(let y=0;y<rec.length;y++) {
+        tilt[y][x] = rec[y][x];
         if(tilt[y][x] === 'O') {
           let valid = true;
-          for(let d=1;valid&&(x+d)<sequence[seq][y].length;d++) {
+          for(let d=1;valid&&(x+d)<rec[y].length;d++) {
             if(tilt[y][x+d]==='.') {
               tilt[y][x+d-1] = '.';
               tilt[y][x+d] = 'O';
@@ -111,15 +108,16 @@ eachLine(filename, function(line) {
         }
       }
     }
+    rec = tilt;
     sequence.push(tilt);
     seq++;
     let sc = score(tilt);
     for(let k=0;k<weights.length;k++) {
       if(sc === weights[k]) {
-        if(compare(tilt,sequence[k*4])) {
+        if(compare(tilt,sequence[k])) {
           if(cycle===0) {
             first = k;
-            last = seq/4;
+            last = seq;
           }
           console.log(`We have found a cycle with weight ${sc} from ${first} to ${last}`);
           cycle++;
