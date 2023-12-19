@@ -1,0 +1,41 @@
+const lineReader = require("line-reader");
+const Promise = require('bluebird');
+
+const eachLine = Promise.promisify(lineReader.eachLine);
+
+let filename = process.argv.slice(2)[0] || 'input.txt';
+
+let answer = 0;
+
+let floor = [];
+let sequence = [];
+
+eachLine(filename, function(line) {
+  floor.push(line.split(''));
+}).then(function(err) {
+  let tilt = [];
+  sequence.push(floor);
+  for(let y=0;y<floor.length;y++) {
+    tilt.push([]);
+    for(let x=0;x<floor[y].length;x++) {
+      tilt[y][x] = sequence[0][y][x];
+      if(tilt[y][x] === 'O') {
+        let valid = true;
+        for(let d=1;valid&&(y-d)>=0;d++) {
+          if(tilt[y-d][x]==='.') {
+            tilt[y-d+1][x] = '.';
+            tilt[y-d][x] = 'O';
+          } else {
+            valid = false;
+          }
+        }
+      }
+    }
+  }
+  sequence.push(tilt);
+  let weight = tilt.length;
+  for(let k=0;k<weight;k++) {
+    answer += tilt[k].filter((f)=>f==='O').length * (weight-k);
+  }
+  console.log(answer);
+});
