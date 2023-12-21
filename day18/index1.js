@@ -63,6 +63,7 @@ function findArea() {
   per /= 2;
   //console.log(`Raw per is ${per}`);
   area+=per;
+  //Add for the 4 1/4 corners
   area+=1;
   return area;
 }
